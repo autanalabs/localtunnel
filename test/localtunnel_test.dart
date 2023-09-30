@@ -51,7 +51,7 @@ void main() {
 
     await lt.close();
     print("localtunnel closed.");
-    server.close(force: true);
+    await server.close(force: true);
     print("Dart Shelf server closed.");
 
   });
@@ -60,7 +60,7 @@ void main() {
 shelf.Response helloWorldHandler(shelf.Request request) {
   print ("helloWorldHandler: received request!");
   print ("helloWorldHandler: method = ${request.method}");
-  print ("helloWorldHandler: url = ${request.url}");
+  print ("helloWorldHandler: url = ${request.requestedUri.toString()}");
   print ("helloWorldHandler: params = ${request.params}");
   print ("helloWorldHandler: headers = ${request.headers}");
   return shelf.Response.ok('Hello, World!');
