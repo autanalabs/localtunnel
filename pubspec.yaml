@@ -1,0 +1,14 @@
+name: localtunnel
+description: "localtunnel exposes your localhost to the world for easy testing and sharing."
+version: 0.0.1
+repository: https://github.com/autanalabs/localtunnel
+
+environment:
+  sdk: '>=2.17.0 <4.0.0'
+
+dependencies:
+  http: ^1.1.0
+
+dev_dependencies:
+  test: ^1.24.6
+  flutter_lints: ^2.0.0
