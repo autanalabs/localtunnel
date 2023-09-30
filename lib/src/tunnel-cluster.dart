@@ -12,10 +12,10 @@ class TunnelCluster {
 
     final opt = _opts;
 
-    final remoteHostOrIp = opt['remote_ip'] ?? opt['remote_host'];
-    final remotePort = opt['remote_port'];
-    final localHost = opt['local_host'] ?? 'localhost';
-    final localPort = opt['local_port'];
+    final remoteHostOrIp = opt['remoteIp'] ?? opt['remoteHost'];
+    final remotePort = opt['remotePort'];
+    final localHost = opt['localHost'] ?? 'localhost';
+    final localPort = opt['localPort'];
 
     Future<Socket> remote = _createSocket(remoteHostOrIp, remotePort);
     Future<Socket> local = _createSocket(localHost, localPort);
