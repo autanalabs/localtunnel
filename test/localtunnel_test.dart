@@ -29,7 +29,6 @@ void main() {
       InternetAddress.anyIPv4, // Allows external connections
       11978,
     );
-    await Future.delayed(const Duration(seconds: 1));
     print("Dart Shelf server listening at 0.0.0.0:11978");
 
     print('creating localtunnel to localhost:11978...');
@@ -39,7 +38,6 @@ void main() {
     });
     await lt.open();
     print ("localtunnel created and exposed URL=${lt.url}");
-    await Future.delayed(const Duration(seconds: 1));
 
     print ("trying GET ${lt.url}/helloworld ...");
     final response = await http.get(Uri.parse('${lt.url}/helloworld'));
@@ -51,8 +49,7 @@ void main() {
       print('Error: ${response.statusCode}');
     }
 
-    await Future.delayed(const Duration(seconds: 1));
-    lt.close();
+    await lt.close();
     print("localtunnel closed.");
     server.close(force: true);
     print("Dart Shelf server closed.");

@@ -77,9 +77,9 @@ class Tunnel {
     }
   }
 
-  void _stablish(dynamic info) {
+  Future<void> _stablish(dynamic info) async {
     cluster = TunnelCluster(info);
-    cluster.open();
+    await cluster.open();
     _closed = false;
   }
 
@@ -88,15 +88,15 @@ class Tunnel {
       dynamic info = await _init();
       clientId = info['name'];
       url = info['url'];
-      _stablish(info);
+      await _stablish(info);
     } catch (e) {
       print('Error: $e');
     }
   }
 
-  void close() {
+  Future<void> close() async {
     if (!_closed) {
-      cluster.close();
+      await cluster.close();
       _closed = true;
     }
   }

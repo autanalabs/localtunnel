@@ -8,7 +8,7 @@ class TunnelCluster {
 
   TunnelCluster([this._opts = const {}]);
 
-  void open() async {
+  Future<void> open() async {
 
     final opt = _opts;
 
@@ -46,10 +46,12 @@ class TunnelCluster {
     });
   }
 
-  void close() {
+  Future<void> close() async {
     if (_bridge.isNotEmpty) {
-      _bridge[0].close();
-      _bridge[1].close();
+      await Future.wait([_bridge[0].close(), _bridge[1].close()]);
+      _bridge[0].destroy();
+      _bridge[1].destroy();
+      _bridge = [];
     }
   }
 
