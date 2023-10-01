@@ -1,12 +1,12 @@
 
 import 'dart:io';
 
-class TunnelCluster {
+class TunnelBridge {
   static const maxWait = Duration(seconds: 10);
   dynamic _opts;
   List<Socket> _bridge = [];
 
-  TunnelCluster([this._opts = const {}]);
+  TunnelBridge([this._opts = const {}]);
 
   Future<void> open() async {
 

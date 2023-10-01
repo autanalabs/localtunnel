@@ -1,22 +1,16 @@
-import 'dart:async';
 import 'dart:io';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:test/test.dart';
 import 'package:shelf/shelf.dart' as shelf;
 import 'package:shelf/shelf_io.dart' as shelf_io;
 import 'package:shelf_router/shelf_router.dart' as shelf_router;
-import 'package:shelf_static/shelf_static.dart' as shelf_static;
 import 'package:http/http.dart' as http;
 
 import 'package:localtunnel/localtunnel.dart';
 
 void main() {
-  test('adds one to input values', () {
-    final calculator = Calculator();
-    expect(calculator.addOne(2), 3);
-    expect(calculator.addOne(-7), -6);
-    expect(calculator.addOne(0), 1);
-  });
 
   test('create a localtunnel', ()  async {
 
@@ -55,6 +49,43 @@ void main() {
     print("Dart Shelf server closed.");
 
   });
+
+  test('create a tunnelSocket', ()  async {
+
+    print('creating a tunnel socket');
+    final tSocket = TunnelSocket();
+    await tSocket.open();
+    print ("tunnel socket created and exposed URL=${tSocket.url}");
+
+    tSocket.listen((event) {
+      String httpRequest = String.fromCharCodes(event);
+      print("tunnel socket request received: $httpRequest");
+
+      String httpResponse = 'HTTP/1.1 200 OK\r\n'
+          'Content-Type: text/plain\r\n'
+          'Content-Length: 12\r\n'
+          '\r\n'
+          'Hello, World';
+
+      Uint8List buffer = Uint8List.fromList(httpResponse.codeUnits);
+      tSocket.add(buffer);
+      print("tunnel socket response sent");
+    });
+
+    print ("trying to send data to ${tSocket.url}");
+    final response = await http.get(Uri.parse('${tSocket.url}'));
+
+    print("received status = ${response.statusCode}");
+    if (response.statusCode == 200) {
+      print("body = ${response.body}");
+    } else {
+      print('Error: ${response.statusCode}');
+    }
+
+    await tSocket.close();
+    print("tunnel socket closed.");
+
+  });
 }
 
 shelf.Response helloWorldHandler(shelf.Request request) {
@@ -65,4 +96,5 @@ shelf.Response helloWorldHandler(shelf.Request request) {
   print ("helloWorldHandler: headers = ${request.headers}");
   return shelf.Response.ok('Hello, World!');
 }
+
 

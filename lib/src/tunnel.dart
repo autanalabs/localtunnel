@@ -2,7 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import './tunnel-cluster.dart';
+import './tunnel-bridge.dart';
 
 class Tunnel {
   final dynamic opts;
@@ -10,7 +10,7 @@ class Tunnel {
   late final String clientId;
   late final String url;
   late final String cachedUrl;
-  late final TunnelCluster cluster;
+  late final TunnelBridge cluster;
 
   Tunnel({this.opts = const {}}) {
     if (opts['host'] == null) {
@@ -56,7 +56,6 @@ class Tunnel {
   }
 
   Future<dynamic> _init() async {
-    final params = {'responseType': 'json'};
     final baseUri = '${opts['host']}/';
     final assignedDomain = opts['subdomain'];
     final uri = '$baseUri${assignedDomain ?? '?new'}';
@@ -78,7 +77,7 @@ class Tunnel {
   }
 
   Future<void> _stablish(dynamic info) async {
-    cluster = TunnelCluster(info);
+    cluster = TunnelBridge(info);
     await cluster.open();
     _closed = false;
   }
